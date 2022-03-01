@@ -1,0 +1,2 @@
+The classes in this package provide a structured way to add documentation, based upon a number of templates.
+Most users are probably better off using the [documentation importers](../importer) rather these templates.
