@@ -4,7 +4,7 @@ Date: 2016-02-12
 
 ## Status
 
-Superceded by [10. AsciiDoc format](0010-asciidoc-format.md)
+Accepted
 
 ## Context
 

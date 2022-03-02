@@ -74,7 +74,7 @@ public class AdrToolsDecisionImporterTests {
     public void test_importDecisions() {
         decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
 
-        assertEquals(10, documentation.getDecisions().size());
+        assertEquals(9, documentation.getDecisions().size());
 
         Decision decision1 = documentation.getDecisions().stream().filter(d -> d.getId().equals("1")).findFirst().get();
         assertEquals("1", decision1.getId());
@@ -96,8 +96,6 @@ public class AdrToolsDecisionImporterTests {
                         "\n" +
                         "We need to record the architectural decisions made on this project.\n" +
                         "\n" +
-                        "![](images/structurizr-banner.png)\n" +
-                        "\n" +
                         "## Decision\n" +
                         "\n" +
                         "We will use Architecture Decision Records, as described by Michael Nygard in this article: http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions\n" +
@@ -109,20 +107,22 @@ public class AdrToolsDecisionImporterTests {
     }
 
     @Test
+    public void test_importDocumentation_CapturesLinksBetweenDecisions() {
+        decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
+
+        Decision decision5 = documentation.getDecisions().stream().filter(d -> d.getId().equals("5")).findFirst().get();
+        assertEquals(1, decision5.getLinks().size());
+        Decision.Link link = decision5.getLinks().iterator().next();
+        assertEquals("9", link.getId());
+        assertEquals("Amended by", link.getDescription());
+    }
+
+    @Test
     public void test_importDocumentation_RewritesLinksBetweenDecisions() {
         decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
 
         Decision decision5 = documentation.getDecisions().stream().filter(d -> d.getId().equals("5")).findFirst().get();
         assertTrue(decision5.getContent().contains("Amended by [9. Help scripts](#9)"));
-    }
-
-    @Test
-    public void test_importDocumentation_SupportsTheIncorrectSpellingOfSuperseded() {
-        decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
-
-        Decision decision4 = documentation.getDecisions().stream().filter(d -> d.getId().equals("4")).findFirst().get();
-        assertEquals("Superseded", decision4.getStatus());
-        assertTrue(decision4.getContent().contains("Superceded by [10. AsciiDoc format](#10)"));
     }
 
 }

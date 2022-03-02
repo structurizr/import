@@ -3,6 +3,7 @@ package com.structurizr.documentation.importer;
 import com.structurizr.documentation.Decision;
 import com.structurizr.documentation.Documentable;
 import com.structurizr.documentation.Format;
+import com.structurizr.util.StringUtils;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -18,6 +19,7 @@ import java.util.regex.Pattern;
  * The format for ADRs is as follows:
  *
  * Filename: {DECISION_ID:0000}-*.md
+ *
  * Content:
  * # {DECISION_ID}. {DECISION_TITLE}
  *
@@ -25,45 +27,49 @@ import java.util.regex.Pattern;
  *
  * ## Status
  *
- * {DECISION_STATUS}
+ * {DECISION_STATUS and links}
  *
- * {DECISION_CONTENT}
+ * ## Context
+ * ...
  */
 public class AdrToolsDecisionImporter implements DocumentationImporter {
-
-    private static final Pattern titleRegex = Pattern.compile("^# \\d*\\. (.*)$", Pattern.MULTILINE);
-    private static final Pattern dateRegex = Pattern.compile("^Date: (\\d\\d\\d\\d-\\d\\d-\\d\\d)$",Pattern.MULTILINE);
-    private static final Pattern statusRegex = Pattern.compile("## Status\\n\\n(\\w*)");
-
-    private static final Pattern SUPERSEDED_BY_LINK_REGEX = Pattern.compile("^Superseded by \\[.*\\]\\((.*)\\)$", Pattern.MULTILINE);
-    private static final Pattern SUPERCEDED_BY_LINK_REGEX = Pattern.compile("^Superceded by \\[.*\\]\\((.*)\\)$", Pattern.MULTILINE);
-    private static final Pattern SUPERSEDES_LINK_REGEX = Pattern.compile("^Supersedes \\[.*\\]\\((.*)\\)$", Pattern.MULTILINE);
-    private static final Pattern SUPERCEDES_LINK_REGEX = Pattern.compile("^Supercedes \\[.*\\]\\((.*)\\)$", Pattern.MULTILINE);
-    private static final Pattern AMENDED_BY_LINK_REGEX = Pattern.compile("^Amended by \\[.*\\]\\((.*)\\)$", Pattern.MULTILINE);
-    private static final Pattern REQUIRES_LINK_REGEX = Pattern.compile("^requires \\[.*\\]\\((.*)\\)$", Pattern.MULTILINE);
-    private static final Pattern REFERENCE_LINK_REGEX = Pattern.compile("\\[.*\\]\\((.*)\\)", Pattern.MULTILINE);
 
     private static final String STATUS_PROPOSED = "Proposed";
     private static final String STATUS_SUPERSEDED = "Superseded";
     private static final String SUPERCEDED_ALTERNATIVE_SPELLING = "Superceded";
 
-    private static final String LINK_SUPERSEDED_BY = "SupersededBy";
-    private static final String LINK_SUPERSEDES = "Supersedes";
-    private static final String LINK_AMENDED_BY = "AmendedBy";
-    private static final String LINK_REQUIRES = "Requires";
-    private static final String LINK_REFERENCES = "References";
+    private static final String DATE_PREFIX = "Date: ";
+    private static final String STATUS_HEADING = "## Status";
+    private static final String CONTEXT_HEADING = "## Context";
+
+    private static final Pattern LINK_REGEX = Pattern.compile("(.*) \\[.*]\\((.*)\\)");
 
     private String dateFormat = "yyyy-MM-dd";
     private TimeZone timeZone = TimeZone.getTimeZone("UTC");
 
+    /**
+     * Sets the date format to use when parsing dates (the default is "yyyy-MM-dd").
+     *
+     * @param dateFormat    a date format, as a String
+     */
     public void setDateFormat(String dateFormat) {
         this.dateFormat = dateFormat;
     }
 
+    /**
+     * Sets the time zone to use when parsing dates (the default is UTC)
+     *
+     * @param timeZone      a time zone as a String (e.g. "Europe/London" or "UTC")
+     */
     public void setTimeZone(String timeZone) {
         this.timeZone = TimeZone.getTimeZone(timeZone);
     }
 
+    /**
+     * Sets the time zone to use when parsing dates.
+     *
+     * @param timeZone      a TimeZone instance
+     */
     public void setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
     }
@@ -106,22 +112,13 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
                 }
 
                 for (Decision decision : decisionsById.values()) {
-                    String content = decision.getContent();
-
-                    // calculate any links between this and other ADRs
-                    addLink(SUPERSEDED_BY_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_SUPERSEDED_BY, true);
-                    addLink(SUPERCEDED_BY_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_SUPERSEDED_BY, true);
-                    addLink(SUPERSEDES_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_SUPERSEDES, true);
-                    addLink(SUPERCEDES_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_SUPERSEDES, true);
-                    addLink(AMENDED_BY_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_AMENDED_BY, true);
-                    addLink(REQUIRES_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_REQUIRES, true);
-                    addLink(REFERENCE_LINK_REGEX, decision, decisionsByFilename, decisionsById, LINK_REFERENCES, false);
+                    extractLinks(decision, decisionsByFilename);
 
                     // and replace file references, for example "0008-some-decision.md" -> "#8"
+                    String content = decision.getContent();
                     for (String filename : decisionsByFilename.keySet()) {
                         content = content.replace(filename, calculateUrl(decisionsByFilename.get(filename)));
                     }
-
                     decision.setContent(content);
                 }
             }
@@ -130,7 +127,7 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
         }
     }
 
-    private Decision importDecision(File file) throws Exception {
+    protected Decision importDecision(File file) throws Exception {
         String id = extractIntegerIDFromFileName(file);
         Decision decision = new Decision(id);
 
@@ -138,67 +135,91 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
         content = content.replace("\r", "");
         decision.setContent(content);
 
-        decision.setTitle(extractTitle(content));
-        decision.setDate(extractDate(content));
-        decision.setStatus(extractStatus(content));
+        String[] lines = content.split("\\n");
+        decision.setTitle(extractTitle(lines));
+        decision.setDate(extractDate(lines));
+        decision.setStatus(extractStatus(lines));
         decision.setFormat(Format.Markdown);
 
         return decision;
     }
 
-    private void addLink(Pattern pattern, Decision decision, Map<String,Decision> index, Map<String,Decision> decisionMap, String linkType, boolean addAlways) {
-        Matcher matcher = pattern.matcher(decision.getContent());
-        while (matcher.find()) {
-            String filename = matcher.group(1);
-
-            if (index.containsKey(filename)) {
-                String targetId = index.get(filename).getId();
-                Decision targetDecision = decisionMap.get(targetId);
-
-                if (addAlways || !decision.hasLinkTo(targetDecision)) {
-                    decision.addLink(targetDecision, linkType);
-                }
-            }
-        }
-    }
-
-    private String extractIntegerIDFromFileName(File file) {
+    protected String extractIntegerIDFromFileName(File file) {
         return "" + Integer.parseInt(file.getName().substring(0, 4));
     }
 
-    private String extractTitle(String content) {
-        Matcher matcher = titleRegex.matcher(content);
-        if (matcher.find()) {
-            return matcher.group(1);
-        } else {
-            return "Untitled";
-        }
+    protected String extractTitle(String[] lines) {
+        // the title is assumed to be the first line of the content, in the format:
+        // # {DECISION_ID}. {DECISION_TITLE}
+        String titleLine = lines[0];
+
+        return titleLine.substring(titleLine.indexOf(".") + 2);
     }
 
-    private Date extractDate(String content) throws Exception {
-        Matcher matcher = dateRegex.matcher(content);
+    protected Date extractDate(String[] lines) throws Exception {
+        // the date is on a line of its own, in the format:
+        // Date: {DECISION_DATE:YYYY-MM-DD}
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         sdf.setTimeZone(timeZone);
 
-        if (matcher.find()) {
-            return sdf.parse(matcher.group(1));
-        } else {
-            return new Date();
+        for (String line : lines) {
+            if (line.startsWith(DATE_PREFIX)) {
+                String dateAsString = line.substring(DATE_PREFIX.length());
+
+                return sdf.parse(dateAsString);
+            }
         }
+
+        return new Date();
     }
 
-    private String extractStatus(String content) {
-        Matcher matcher = statusRegex.matcher(content);
-        if (matcher.find()) {
-            String status = matcher.group(1);
-
-            if (status.equals(SUPERCEDED_ALTERNATIVE_SPELLING)) {
-                return STATUS_SUPERSEDED;
+    protected String extractStatus(String[] lines) {
+        // the status is on a line of its own, after the ## Status header:
+        boolean inStatusSection = false;
+        for (String line : lines) {
+            if (!inStatusSection) {
+                if (line.startsWith(STATUS_HEADING)) {
+                    inStatusSection = true;
+                }
             } else {
-                return status;
+                if (!StringUtils.isNullOrEmpty(line)) {
+                    String status = line.split(" ")[0];
+                    // early versions of adr-tools used the alternative spelling
+                    if (SUPERCEDED_ALTERNATIVE_SPELLING.equals(status)) {
+                        status = STATUS_SUPERSEDED;
+                    }
+
+                    return status;
+                }
             }
-        } else {
-            return STATUS_PROPOSED;
+        }
+
+        return STATUS_PROPOSED;
+    }
+
+    protected void extractLinks(Decision decision, Map<String,Decision> decisionsByFilename) {
+        // adr-tools allows users to create arbitrary links between ADRs, which reside inside the ## Status section
+        String[] lines = decision.getContent().split("\\n");
+        boolean inStatusSection = false;
+        for (String line : lines) {
+            if (!inStatusSection) {
+                if (line.startsWith(STATUS_HEADING)) {
+                    inStatusSection = true;
+                }
+            } else {
+                if (line.startsWith(CONTEXT_HEADING)) {
+                    // we're done
+                    return;
+                } else if (!StringUtils.isNullOrEmpty(line)) {
+                    Matcher matcher = LINK_REGEX.matcher(line);
+                    if (matcher.find()) {
+                        String linkDescription = matcher.group(1);
+                        String markdownFile = matcher.group(2);
+
+                        decision.addLink(decisionsByFilename.get(markdownFile), linkDescription);
+                    }
+                }
+            }
         }
     }
 
