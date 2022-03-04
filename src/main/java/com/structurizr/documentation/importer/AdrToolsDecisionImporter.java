@@ -216,7 +216,10 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
                         String linkDescription = matcher.group(1);
                         String markdownFile = matcher.group(2);
 
-                        decision.addLink(decisionsByFilename.get(markdownFile), linkDescription);
+                        Decision targetDecision = decisionsByFilename.get(markdownFile);
+                        if (targetDecision != null) {
+                            decision.addLink(targetDecision, linkDescription);
+                        }
                     }
                 }
             }
