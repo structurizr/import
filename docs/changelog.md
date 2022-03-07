@@ -1,5 +1,5 @@
 # Changelog
 
-## 1.0.0 (unreleased)
+## 1.0.0 (7th March 2022)
 
 - Initial version, based upon a split from [structurizr-java](https://github.com/structurizr/java) and [structurizr-java-extensions](https://github.com/structurizr/java-extensions).
