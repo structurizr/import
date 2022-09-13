@@ -8,7 +8,9 @@ import com.structurizr.documentation.util.FormatFinder;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +56,18 @@ public class DefaultDocumentationImporter implements DocumentationImporter {
             } else {
                 importFile(documentable, path);
             }
+
+            // now trim the filenames
+            for (Section section : documentable.getDocumentation().getSections()) {
+                String filename = section.getFilename();
+
+                filename = filename.replace(path.getCanonicalPath(), "");
+                if (filename.startsWith("/")) {
+                    filename = filename.substring(1);
+                }
+
+                section.setFilename(filename);
+            }
         } catch (Exception e) {
             throw new DocumentationImportException(e);
         }
@@ -78,6 +92,7 @@ public class DefaultDocumentationImporter implements DocumentationImporter {
             }
 
             Section section = new Section(sectionName, format, content);
+            section.setFilename(file.getCanonicalPath());
             documentable.getDocumentation().addSection(section);
         }
     }

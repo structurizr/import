@@ -1,6 +1,7 @@
 package com.structurizr.documentation.importer;
 
 import com.structurizr.documentation.Documentable;
+import com.structurizr.documentation.Section;
 
 import java.io.File;
 import java.util.Arrays;
@@ -30,23 +31,39 @@ public class RecursiveDefaultDocumentationImporter extends DefaultDocumentationI
             }
 
             if (path.isDirectory()) {
-                File[] filesInDirectory = path.listFiles();
-                if (filesInDirectory != null) {
-                    Arrays.sort(filesInDirectory);
-
-                    for (File file : filesInDirectory) {
-                        if (!file.isDirectory() && !file.getName().startsWith(".")) {
-                            importFile(documentable, file);
-                        } else if (file.isDirectory()) {
-                            importDocumentation(documentable, file);
-                        }
-                    }
-                }
+                importDirectory(documentable, path);
             } else {
                 importFile(documentable, path);
             }
+
+            // now trim the filenames
+            for (Section section : documentable.getDocumentation().getSections()) {
+                String filename = section.getFilename();
+
+                filename = filename.replace(path.getCanonicalPath(), "");
+                if (filename.startsWith("/")) {
+                    filename = filename.substring(1);
+                }
+
+                section.setFilename(filename);
+            }
         } catch (Exception e) {
             throw new DocumentationImportException(e);
+        }
+    }
+
+    private void importDirectory(Documentable documentable, File path) throws Exception {
+        File[] filesInDirectory = path.listFiles();
+        if (filesInDirectory != null) {
+            Arrays.sort(filesInDirectory);
+
+            for (File file : filesInDirectory) {
+                if (!file.isDirectory() && !file.getName().startsWith(".")) {
+                    importFile(documentable, file);
+                } else if (file.isDirectory()) {
+                    importDirectory(documentable, file);
+                }
+            }
         }
     }
 

@@ -61,20 +61,21 @@ public class DefaultDocumentImporterTests {
         Set<Section> sections = workspace.getDocumentation().getSections();
         assertEquals(6, sections.size());
 
-        assertSection("Section 1", Format.Markdown, "## Section 1", 1, sections.stream().filter(s -> s.getTitle().equals("Section 1")).findFirst().get());
-        assertSection("Section 2", Format.Markdown, "## Section 2", 2, sections.stream().filter(s -> s.getTitle().equals("Section 2")).findFirst().get());
-        assertSection("Section 3", Format.Markdown, "## Section 3", 3, sections.stream().filter(s -> s.getTitle().equals("Section 3")).findFirst().get());
-        assertSection("Section 4", Format.AsciiDoc, "== Section 4", 4, sections.stream().filter(s -> s.getTitle().equals("Section 4")).findFirst().get());
-        assertSection("Section 5", Format.AsciiDoc, "== Section 5", 5, sections.stream().filter(s -> s.getTitle().equals("Section 5")).findFirst().get());
-        assertSection("Section 6", Format.AsciiDoc, "== Section 6", 6, sections.stream().filter(s -> s.getTitle().equals("Section 6")).findFirst().get());
+        assertSection("Section 1", Format.Markdown, "## Section 1", 1, "01-section-1.md", sections.stream().filter(s -> s.getTitle().equals("Section 1")).findFirst().get());
+        assertSection("Section 2", Format.Markdown, "## Section 2", 2, "02-section-2.markdown", sections.stream().filter(s -> s.getTitle().equals("Section 2")).findFirst().get());
+        assertSection("Section 3", Format.Markdown, "## Section 3", 3, "03-section-3.text", sections.stream().filter(s -> s.getTitle().equals("Section 3")).findFirst().get());
+        assertSection("Section 4", Format.AsciiDoc, "== Section 4", 4, "04-section-4.adoc", sections.stream().filter(s -> s.getTitle().equals("Section 4")).findFirst().get());
+        assertSection("Section 5", Format.AsciiDoc, "== Section 5", 5, "05-section-5.asciidoc", sections.stream().filter(s -> s.getTitle().equals("Section 5")).findFirst().get());
+        assertSection("Section 6", Format.AsciiDoc, "== Section 6", 6, "06-section-6.asc", sections.stream().filter(s -> s.getTitle().equals("Section 6")).findFirst().get());
     }
 
-    private void assertSection(String title, Format format, String content, int order, Section section) {
+    private void assertSection(String title, Format format, String content, int order, String filename, Section section) {
         assertTrue(workspace.getDocumentation().getSections().contains(section));
         assertEquals(title, section.getTitle());
         assertEquals(format, section.getFormat());
         assertEquals(content, section.getContent());
         assertEquals(order, section.getOrder());
+        assertEquals(filename, section.getFilename());
     }
 
 }
