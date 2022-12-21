@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.2 (unreleased to Maven Central)
+## 1.0.2 (21st December 2022)
 
 - Adds the section filename into the model when importing documentation. 
 
