@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 (unreleased)
+## 1.1.0 (5th January 2023)
 
 - Adds support for documentation at the container level.
 
