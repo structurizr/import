@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (unreleased)
+
+- Adds support for documentation at the container level.
+
 ## 1.0.2 (21st December 2022)
 
 - Adds the section filename into the model when importing documentation. 

@@ -32,7 +32,7 @@ public class DefaultDocumentationImporter implements DocumentationImporter {
     @Override
     public void importDocumentation(Documentable documentable, File path) {
         if (documentable == null) {
-            throw new IllegalArgumentException("A workspace or software system must be specified.");
+            throw new IllegalArgumentException("A workspace, software system, or container must be specified.");
         }
 
         if (path == null) {
