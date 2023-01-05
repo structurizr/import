@@ -34,7 +34,7 @@ public class AdrToolsDecisionImporterTests {
             decisionImporter.importDocumentation(null, null);
             fail();
         } catch (IllegalArgumentException iae) {
-            assertEquals("A workspace or software system must be specified.", iae.getMessage());
+            assertEquals("A workspace, software system, or container must be specified.", iae.getMessage());
         }
     }
 
