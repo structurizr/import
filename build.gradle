@@ -22,7 +22,7 @@ targetCompatibility = 1.8
 
 description = 'Structurizr documentation templates and importers'
 group = 'com.structurizr'
-version = '1.1.0'
+version = '1.1.1'
 
 test {
     useJUnitPlatform()

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1 (unreleased) 
+
+- Fixes #3 (Images from hidden folders are imported).
+
 ## 1.1.0 (5th January 2023)
 
 - Adds support for documentation at the container level.

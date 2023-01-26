@@ -50,7 +50,7 @@ public class DefaultImageImporter implements DocumentationImporter {
         if (files != null) {
             for (File file : files) {
                 String name = file.getName().toLowerCase();
-                if (file.isDirectory()) {
+                if (file.isDirectory() && !file.isHidden()) {
                     if (StringUtils.isNullOrEmpty(root)) {
                         importImages(documentable, file.getName(), file);
                     } else {

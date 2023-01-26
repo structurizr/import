@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -154,6 +155,23 @@ public class DefaultImageImporterTests {
         Image png = documentation.getImages().stream().filter(i -> i.getName().equals("image.png")).findFirst().get();
         assertEquals("image/png", png.getType());
         assertTrue(png.getContent().startsWith("iVBORw0KGgoAAAANSUhEUgAAACAAAAAaCAYAAADWm14/AAAD"));
+    }
+
+    @Test
+    public void test_importDocumentation_IgnoresHiddenFolders() throws Exception {
+        Documentation documentation = workspace.getDocumentation();
+
+        File tempDirectory = Files.createTempDirectory("test").toFile();
+        File hiddenFolder = new File(tempDirectory, ".structurizr");
+        hiddenFolder.mkdir();
+
+        File source = new File("./src/test/java/com/structurizr/documentation/importer/images/images/image.png");
+        File destination = new File(hiddenFolder, "image.png");
+        Files.copy(source.toPath(), destination.toPath());
+        assertTrue(destination.exists());
+
+        imageImporter.importDocumentation(workspace, tempDirectory);
+        assertEquals(0, documentation.getImages().size());
     }
 
 }
