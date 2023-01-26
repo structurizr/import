@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.1 (unreleased) 
+## 1.1.1 (26th January 2023) 
 
 - Fixes #3 (Images from hidden folders are imported).
 
