@@ -18,8 +18,7 @@ import java.util.regex.Pattern;
  * This implementation scans a given directory and automatically imports all Markdown or AsciiDoc
  * files in that directory.
  *
- * - Each file must represent a separate documentation section.
- * - The second level heading ("## Section Title" in Markdown and "== Section Title" in AsciiDoc) will be used as the section title.
+ * See https://structurizr.com/help/documentation/headings for details of how section headings and numbering are handled.
  */
 public class DefaultDocumentationImporter implements DocumentationImporter {
 
