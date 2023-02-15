@@ -20,9 +20,9 @@ compileTestJava.options.encoding = 'UTF-8'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-description = 'Structurizr documentation templates and importers'
+description = 'Utilities to import diagrams and documentation into a Structurizr workspace'
 group = 'com.structurizr'
-version = '1.1.1'
+version = '1.2.0'
 
 test {
     useJUnitPlatform()
@@ -59,14 +59,14 @@ publishing {
             from components.java
 
             pom {
-                name = 'structurizr-documentation'
-                description = 'Import documentation/decisions into a Structurizr workspace'
-                url = 'https://github.com/structurizr/documentation'
+                name = 'structurizr-import'
+                description = 'Utilities to import diagrams and documentation into a Structurizr workspace'
+                url = 'https://github.com/structurizr/import'
 
                 scm {
-                    connection = 'scm:git:git://github.com/structurizr/documentation.git'
-                    developerConnection = 'scm:git:git@github.com:structurizr/documentation.git'
-                    url = 'https://github.com/structurizr/dsl'
+                    connection = 'scm:git:git://github.com/structurizr/import.git'
+                    developerConnection = 'scm:git:git@github.com:structurizr/import.git'
+                    url = 'https://github.com/structurizr/import'
                 }
 
                 licenses {

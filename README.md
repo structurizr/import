@@ -1,4 +1,4 @@
-# structurizr-documentation
+# structurizr-import
 
 This repo includes a number of classes for importing the following into a Structurizr workspace:
 
