@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0 (16th February 2023)
+
+- __Breaking change__: Renamed artifact from `structurizr-documentation` to `structurizr-import`.
+- __Breaking change__: Renamed `com.structurizr.documentation.importer` to `com.structurizr.importer.documentation`
+- __Breaking change__: Removed templates.
+
 ## 1.1.1 (26th January 2023) 
 
 - Fixes #3 (Images from hidden folders are imported).
