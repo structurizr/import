@@ -1,4 +1,4 @@
-package com.structurizr.documentation.importer;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.documentation.Documentable;
 import com.structurizr.documentation.Image;

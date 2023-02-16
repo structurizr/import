@@ -1,4 +1,4 @@
-package com.structurizr.documentation.importer;
+package com.structurizr.importer.documentation;
 
 public class DocumentationImportException extends RuntimeException {
 

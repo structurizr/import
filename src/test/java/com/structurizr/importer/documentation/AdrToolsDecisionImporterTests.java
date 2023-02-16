@@ -1,4 +1,4 @@
-package com.structurizr.documentation.importer;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.Workspace;
 import com.structurizr.documentation.Decision;
@@ -72,7 +72,7 @@ public class AdrToolsDecisionImporterTests {
 
     @Test
     public void test_importDecisions() {
-        decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
+        decisionImporter.importDocumentation(workspace, new File("./src/test/adrs"));
 
         assertEquals(9, documentation.getDecisions().size());
 
@@ -108,7 +108,7 @@ public class AdrToolsDecisionImporterTests {
 
     @Test
     public void test_importDocumentation_CapturesLinksBetweenDecisions() {
-        decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
+        decisionImporter.importDocumentation(workspace, new File("./src/test/adrs"));
 
         Decision decision5 = documentation.getDecisions().stream().filter(d -> d.getId().equals("5")).findFirst().get();
         assertEquals(1, decision5.getLinks().size());
@@ -119,7 +119,7 @@ public class AdrToolsDecisionImporterTests {
 
     @Test
     public void test_importDocumentation_RewritesLinksBetweenDecisions() {
-        decisionImporter.importDocumentation(workspace, new File("src/test/adrs"));
+        decisionImporter.importDocumentation(workspace, new File("./src/test/adrs"));
 
         Decision decision5 = documentation.getDecisions().stream().filter(d -> d.getId().equals("5")).findFirst().get();
         assertTrue(decision5.getContent().contains("Amended by [9. Help scripts](#9)"));

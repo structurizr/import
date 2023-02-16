@@ -1,16 +1,13 @@
-package com.structurizr.documentation.importer;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.documentation.Documentable;
 import com.structurizr.documentation.Format;
 import com.structurizr.documentation.Section;
-import com.structurizr.documentation.util.FormatFinder;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

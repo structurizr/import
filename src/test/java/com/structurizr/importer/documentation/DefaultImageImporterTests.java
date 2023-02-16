@@ -1,4 +1,4 @@
-package com.structurizr.documentation.importer;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.Workspace;
 import com.structurizr.documentation.Documentation;
@@ -56,7 +56,7 @@ public class DefaultImageImporterTests {
 
     @Test
     public void test_importDocumentation_DoesNothing_WhenThereAreNoImageFilesInThePath() {
-        File directory = new File("./src/test/java/com/structurizr/documentation/importer/images/noimages");
+        File directory = new File("./src/test/docs/images/noimages");
         assertTrue(directory.exists());
         imageImporter.importDocumentation(workspace, directory);
         assertTrue(workspace.getDocumentation().getImages().isEmpty());
@@ -77,7 +77,7 @@ public class DefaultImageImporterTests {
         Documentation documentation = workspace.getDocumentation();
         assertTrue(documentation.getImages().isEmpty());
 
-        imageImporter.importDocumentation(workspace, new File("./src/test/java/com/structurizr/documentation/importer/images/images"));
+        imageImporter.importDocumentation(workspace, new File("./src/test/docs/images/images"));
 
         Set<Image> images = documentation.getImages();
         assertEquals(4, documentation.getImages().size());
@@ -108,7 +108,7 @@ public class DefaultImageImporterTests {
         Documentation documentation = workspace.getDocumentation();
         assertTrue(documentation.getImages().isEmpty());
 
-        imageImporter.importDocumentation(workspace, new File("./src/test/java/com/structurizr/documentation/importer/images"));
+        imageImporter.importDocumentation(workspace, new File("./src/test/docs/images"));
         assertEquals(8, documentation.getImages().size());
 
         Image pngInDirectory = documentation.getImages().stream().filter(i -> i.getName().equals("image.png")).findFirst().get();
@@ -149,7 +149,7 @@ public class DefaultImageImporterTests {
         Documentation documentation = workspace.getDocumentation();
         assertTrue(documentation.getImages().isEmpty());
 
-        imageImporter.importDocumentation(workspace, new File("./src/test/java/com/structurizr/documentation/importer/images/image.png"));
+        imageImporter.importDocumentation(workspace, new File("./src/test/docs/images/image.png"));
         assertEquals(1, documentation.getImages().size());
 
         Image png = documentation.getImages().stream().filter(i -> i.getName().equals("image.png")).findFirst().get();
@@ -165,7 +165,7 @@ public class DefaultImageImporterTests {
         File hiddenFolder = new File(tempDirectory, ".structurizr");
         hiddenFolder.mkdir();
 
-        File source = new File("./src/test/java/com/structurizr/documentation/importer/images/images/image.png");
+        File source = new File("./src/test/docs/images/images/image.png");
         File destination = new File(hiddenFolder, "image.png");
         Files.copy(source.toPath(), destination.toPath());
         assertTrue(destination.exists());

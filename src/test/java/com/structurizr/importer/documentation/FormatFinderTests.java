@@ -1,4 +1,4 @@
-package com.structurizr.documentation.util;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.documentation.Format;
 import org.junit.jupiter.api.Assertions;

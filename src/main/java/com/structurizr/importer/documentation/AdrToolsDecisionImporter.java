@@ -1,4 +1,4 @@
-package com.structurizr.documentation.importer;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.documentation.Decision;
 import com.structurizr.documentation.Documentable;
@@ -97,7 +97,7 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
         }
 
         try {
-            Map<String,Decision> decisionsById = new LinkedHashMap<>();
+            Map<String, Decision> decisionsById = new LinkedHashMap<>();
 
             File[] markdownFiles = path.listFiles((dir, name) -> name.endsWith(".md"));
             if (markdownFiles != null) {

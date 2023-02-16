@@ -1,4 +1,4 @@
-package com.structurizr.documentation.util;
+package com.structurizr.importer.documentation;
 
 import com.structurizr.documentation.Format;
 
@@ -9,9 +9,9 @@ import java.util.Set;
 
 public class FormatFinder {
 
-    private static Set<String> MARKDOWN_EXTENSIONS = new HashSet<>(Arrays.asList(".md", ".markdown", ".text"));
+    private static final Set<String> MARKDOWN_EXTENSIONS = new HashSet<>(Arrays.asList(".md", ".markdown", ".text"));
 
-    private static Set<String> ASCIIDOC_EXTENSIONS = new HashSet<>(Arrays.asList(".asciidoc", ".adoc", ".asc"));
+    private static final Set<String> ASCIIDOC_EXTENSIONS = new HashSet<>(Arrays.asList(".asciidoc", ".adoc", ".asc"));
 
     public static boolean isMarkdownOrAsciiDoc(File file) {
         String extension = file.getName().substring(file.getName().lastIndexOf("."));
