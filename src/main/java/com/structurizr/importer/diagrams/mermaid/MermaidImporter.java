@@ -26,7 +26,7 @@ public class MermaidImporter extends AbstractDiagramImporter {
         }
 
         String encodedMermaid = new MermaidEncoder().encode(content);
-        String url = String.format("%s/img/%s", mermaidServer, encodedMermaid);
+        String url = String.format("%s/img/%s?type=png", mermaidServer, encodedMermaid);
         view.setContent(url);
         view.setContentType(CONTENT_TYPE_IMAGE_PNG);
     }

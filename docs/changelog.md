@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 (18th February 2023)
+
+- Explicitly request PNG format from Mermaid servers.
+
 ## 1.2.0 (16th February 2023)
 
 - __Breaking change__: Renamed artifact from `structurizr-documentation` to `structurizr-import`.

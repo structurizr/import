@@ -21,7 +21,7 @@ public class MermaidImporterTests {
         assertNull(view.getElement());
         assertNull(view.getElementId());
         assertEquals("flowchart.mmd", view.getTitle());
-        assertEquals("https://mermaid.ink/img/eyAiY29kZSI6ImZsb3djaGFydCBURFxuICAgIFN0YXJ0IC0tPiBTdG9wIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19", view.getContent());
+        assertEquals("https://mermaid.ink/img/eyAiY29kZSI6ImZsb3djaGFydCBURFxuICAgIFN0YXJ0IC0tPiBTdG9wIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19?type=png", view.getContent());
     }
 
     @Test
