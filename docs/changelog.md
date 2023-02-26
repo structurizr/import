@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.0 (26th February 2023)
+
+- Adds support for choosing whether PlantUML/Mermaid/Kroki diagrams should be imported as PNG or SVG.
+
 ## 1.2.1 (18th February 2023)
 
 - Explicitly request PNG format from Mermaid servers.

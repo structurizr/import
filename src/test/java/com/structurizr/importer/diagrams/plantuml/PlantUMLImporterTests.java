@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlantUMLImporterTests {
 
     @Test
-    public void test_import_WhenATitleIsDefined() throws Exception {
+    public void importDiagram_WhenATitleIsDefined() throws Exception {
         Workspace workspace = new Workspace("Name", "Description");
         workspace.getViews().getConfiguration().addProperty("plantuml.url", "https://plantuml.com/plantuml");
         ImageView view = workspace.getViews().createImageView("key");
@@ -25,7 +25,7 @@ public class PlantUMLImporterTests {
     }
 
     @Test
-    public void test_import_WhenATitleIsNotDefined() throws Exception {
+    public void importDiagram_WhenATitleIsNotDefined() throws Exception {
         Workspace workspace = new Workspace("Name", "Description");
         workspace.getViews().getConfiguration().addProperty("plantuml.url", "https://plantuml.com/plantuml");
         ImageView view = workspace.getViews().createImageView("key");
@@ -39,7 +39,29 @@ public class PlantUMLImporterTests {
     }
 
     @Test
-    public void test_import_WhenThePlantUMLURLIsNotSpecified() throws Exception {
+    public void importDiagram_AsPNG() throws Exception {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getViews().getConfiguration().addProperty("plantuml.url", "https://plantuml.com/plantuml");
+        workspace.getViews().getConfiguration().addProperty("plantuml.format", "png");
+        ImageView view = workspace.getViews().createImageView("key");
+
+        new PlantUMLImporter().importDiagram(view, new File("./src/test/diagrams/plantuml/with-title.puml"));
+        assertEquals("https://plantuml.com/plantuml/png/SoWkIImgAStDuIh9BCb9LGXEBInDpKjELKZ9J4mlIinLIAr8p2t8IULooazIqBLJSCp914fQAMIavkJaSpcavgK0zG80", view.getContent());
+    }
+
+    @Test
+    public void importDiagram_AsSVG() throws Exception {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getViews().getConfiguration().addProperty("plantuml.url", "https://plantuml.com/plantuml");
+        workspace.getViews().getConfiguration().addProperty("plantuml.format", "svg");
+        ImageView view = workspace.getViews().createImageView("key");
+
+        new PlantUMLImporter().importDiagram(view, new File("./src/test/diagrams/plantuml/with-title.puml"));
+        assertEquals("https://plantuml.com/plantuml/svg/SoWkIImgAStDuIh9BCb9LGXEBInDpKjELKZ9J4mlIinLIAr8p2t8IULooazIqBLJSCp914fQAMIavkJaSpcavgK0zG80", view.getContent());
+    }
+
+    @Test
+    public void importDiagram_WhenThePlantUMLURLIsNotSpecified() throws Exception {
         Workspace workspace = new Workspace("Name", "Description");
         ImageView view = workspace.getViews().createImageView("key");
 
@@ -48,6 +70,21 @@ public class PlantUMLImporterTests {
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("Please define a view/viewset property named plantuml.url to specify your PlantUML server", e.getMessage());
+        }
+    }
+
+    @Test
+    public void importDiagram_WhenAnInvalidFormatIsSpecified() throws Exception {
+        Workspace workspace = new Workspace("Name", "Description");
+        workspace.getViews().getConfiguration().addProperty("plantuml.url", "https://plantuml.com/plantuml");
+        workspace.getViews().getConfiguration().addProperty("plantuml.format", "jpg");
+        ImageView view = workspace.getViews().createImageView("key");
+
+        try {
+            new PlantUMLImporter().importDiagram(view, "...");
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("Expected a format of png or svg", e.getMessage());
         }
     }
 

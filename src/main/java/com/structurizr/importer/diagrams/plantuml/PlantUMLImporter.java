@@ -11,6 +11,9 @@ import java.nio.file.Files;
 public class PlantUMLImporter extends AbstractDiagramImporter {
 
     private static final String PLANTUML_URL_PROPERTY = "plantuml.url";
+    private static final String PLANTUML_FORMAT_PROPERTY = "plantuml.format";
+    private static final String PNG_FORMAT = "png";
+    private static final String SVG_FORMAT = "svg";
     private static final String TITLE_STRING = "title ";
     private static final String NEWLINE = "\n";
 
@@ -27,8 +30,17 @@ public class PlantUMLImporter extends AbstractDiagramImporter {
             throw new IllegalArgumentException("Please define a view/viewset property named " + PLANTUML_URL_PROPERTY + " to specify your PlantUML server");
         }
 
+        String format = getViewOrViewSetProperty(view, PLANTUML_FORMAT_PROPERTY);
+        if (StringUtils.isNullOrEmpty(format)) {
+            format = PNG_FORMAT;
+        }
+
+        if (!format.equals(PNG_FORMAT) && !format.equals(SVG_FORMAT)) {
+            throw new IllegalArgumentException(String.format("Expected a format of %s or %s", PNG_FORMAT, SVG_FORMAT));
+        }
+
         String encodedPlantUML = new PlantUMLEncoder().encode(content);
-        String url = String.format("%s/png/%s", plantUMLServer, encodedPlantUML);
+        String url = String.format("%s/%s/%s", plantUMLServer, format, encodedPlantUML);
         view.setContent(url);
         view.setContentType(CONTENT_TYPE_IMAGE_PNG);
 
