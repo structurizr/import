@@ -22,7 +22,7 @@ targetCompatibility = 1.8
 
 description = 'Utilities to import diagrams and documentation into a Structurizr workspace'
 group = 'com.structurizr'
-version = '1.2.1'
+version = '1.3.0'
 
 test {
     useJUnitPlatform()
