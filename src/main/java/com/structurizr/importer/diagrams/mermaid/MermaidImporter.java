@@ -12,8 +12,6 @@ public class MermaidImporter extends AbstractDiagramImporter {
 
     private static final String MERMAID_URL_PROPERTY = "mermaid.url";
     private static final String MERMAID_FORMAT_PROPERTY = "mermaid.format";
-    private static final String PNG_FORMAT = "png";
-    private static final String SVG_FORMAT = "svg";
 
     public void importDiagram(ImageView view, File file) throws Exception {
         String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
@@ -46,7 +44,7 @@ public class MermaidImporter extends AbstractDiagramImporter {
         }
 
         view.setContent(url);
-        view.setContentType(CONTENT_TYPE_IMAGE_PNG);
+        view.setContentType(CONTENT_TYPES_BY_FORMAT.get(format));
     }
 
 }

@@ -22,6 +22,7 @@ public class KrokiImporterTests {
         assertNull(view.getElementId());
         assertEquals("diagram.dot", view.getTitle());
         assertEquals("https://kroki.io/graphviz/png/eNpLyUwvSizIUHBXqPZIzcnJ17ULzy_KSanlAgB1EAjQ", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -37,6 +38,7 @@ public class KrokiImporterTests {
         assertNull(view.getElementId());
         assertEquals("diagram.dot", view.getTitle());
         assertEquals("https://kroki.io/graphviz/png/eNpLyUwvSizIUHBXqPZIzcnJ17ULzy_KSanlAgB1EAjQ", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -52,6 +54,7 @@ public class KrokiImporterTests {
         assertNull(view.getElementId());
         assertEquals("diagram.dot", view.getTitle());
         assertEquals("https://kroki.io/graphviz/svg/eNpLyUwvSizIUHBXqPZIzcnJ17ULzy_KSanlAgB1EAjQ", view.getContent());
+        assertEquals("image/svg+xml", view.getContentType());
     }
 
     @Test

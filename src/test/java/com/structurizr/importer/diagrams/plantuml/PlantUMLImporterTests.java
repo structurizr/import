@@ -22,6 +22,7 @@ public class PlantUMLImporterTests {
         assertNull(view.getElementId());
         assertEquals("Sequence diagram example", view.getTitle());
         assertEquals("https://plantuml.com/plantuml/png/SoWkIImgAStDuIh9BCb9LGXEBInDpKjELKZ9J4mlIinLIAr8p2t8IULooazIqBLJSCp914fQAMIavkJaSpcavgK0zG80", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -36,6 +37,7 @@ public class PlantUMLImporterTests {
         assertNull(view.getElementId());
         assertEquals("without-title.puml", view.getTitle());
         assertEquals("https://plantuml.com/plantuml/png/SoWkIImgAStDuNBAJrBGjLDmpCbCJbMmKiX8pSd9vt98pKi1IW80", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -47,6 +49,7 @@ public class PlantUMLImporterTests {
 
         new PlantUMLImporter().importDiagram(view, new File("./src/test/diagrams/plantuml/with-title.puml"));
         assertEquals("https://plantuml.com/plantuml/png/SoWkIImgAStDuIh9BCb9LGXEBInDpKjELKZ9J4mlIinLIAr8p2t8IULooazIqBLJSCp914fQAMIavkJaSpcavgK0zG80", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -58,6 +61,7 @@ public class PlantUMLImporterTests {
 
         new PlantUMLImporter().importDiagram(view, new File("./src/test/diagrams/plantuml/with-title.puml"));
         assertEquals("https://plantuml.com/plantuml/svg/SoWkIImgAStDuIh9BCb9LGXEBInDpKjELKZ9J4mlIinLIAr8p2t8IULooazIqBLJSCp914fQAMIavkJaSpcavgK0zG80", view.getContent());
+        assertEquals("image/svg+xml", view.getContentType());
     }
 
     @Test

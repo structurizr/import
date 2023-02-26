@@ -12,8 +12,6 @@ public class PlantUMLImporter extends AbstractDiagramImporter {
 
     private static final String PLANTUML_URL_PROPERTY = "plantuml.url";
     private static final String PLANTUML_FORMAT_PROPERTY = "plantuml.format";
-    private static final String PNG_FORMAT = "png";
-    private static final String SVG_FORMAT = "svg";
     private static final String TITLE_STRING = "title ";
     private static final String NEWLINE = "\n";
 
@@ -42,7 +40,7 @@ public class PlantUMLImporter extends AbstractDiagramImporter {
         String encodedPlantUML = new PlantUMLEncoder().encode(content);
         String url = String.format("%s/%s/%s", plantUMLServer, format, encodedPlantUML);
         view.setContent(url);
-        view.setContentType(CONTENT_TYPE_IMAGE_PNG);
+        view.setContentType(CONTENT_TYPES_BY_FORMAT.get(format));
 
         String[] lines = content.split(NEWLINE);
         for (String line : lines) {

@@ -22,6 +22,7 @@ public class MermaidImporterTests {
         assertNull(view.getElementId());
         assertEquals("flowchart.mmd", view.getTitle());
         assertEquals("https://mermaid.ink/img/eyAiY29kZSI6ImZsb3djaGFydCBURFxuICAgIFN0YXJ0IC0tPiBTdG9wIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19?type=png", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -37,6 +38,7 @@ public class MermaidImporterTests {
         assertNull(view.getElementId());
         assertEquals("flowchart.mmd", view.getTitle());
         assertEquals("https://mermaid.ink/img/eyAiY29kZSI6ImZsb3djaGFydCBURFxuICAgIFN0YXJ0IC0tPiBTdG9wIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19?type=png", view.getContent());
+        assertEquals("image/png", view.getContentType());
     }
 
     @Test
@@ -52,6 +54,7 @@ public class MermaidImporterTests {
         assertNull(view.getElementId());
         assertEquals("flowchart.mmd", view.getTitle());
         assertEquals("https://mermaid.ink/svg/eyAiY29kZSI6ImZsb3djaGFydCBURFxuICAgIFN0YXJ0IC0tPiBTdG9wIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19", view.getContent());
+        assertEquals("image/svg+xml", view.getContentType());
     }
 
     @Test
