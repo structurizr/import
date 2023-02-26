@@ -2,7 +2,7 @@
 
 ## 1.3.1 (26th February 2023)
 
-- Sets content type correctly.
+- Sets content type correctly when importing PlantUML/Mermaid/Kroki diagrams.
 
 ## 1.3.0 (26th February 2023)
 
