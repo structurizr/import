@@ -83,7 +83,7 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
     @Override
     public void importDocumentation(Documentable documentable, File path) {
         if (documentable == null) {
-            throw new IllegalArgumentException("A workspace, software system, or container must be specified.");
+            throw new IllegalArgumentException("A workspace, software system, container, or component must be specified.");
         }
 
         if (path == null) {
