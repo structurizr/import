@@ -2,7 +2,7 @@
 
 ## 1.4.0 (5th March 2023)
 
-- Documentation/decisions can now added to components.
+- Documentation/decisions can now be added to components.
 
 ## 1.3.1 (26th February 2023)
 
