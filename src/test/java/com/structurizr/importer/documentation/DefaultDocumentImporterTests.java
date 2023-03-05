@@ -28,7 +28,7 @@ public class DefaultDocumentImporterTests {
             documentationImporter.importDocumentation(null, null);
             fail();
         } catch (IllegalArgumentException iae) {
-            assertEquals("A workspace, software system, or container must be specified.", iae.getMessage());
+            assertEquals("A workspace, software system, container, or component must be specified.", iae.getMessage());
         }
     }
 
