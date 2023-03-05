@@ -14,7 +14,7 @@ public class PlantUMLEncoderPluginTests {
     public void test_run() {
         Workspace workspace = new Workspace("Name", "Description");
 
-        Section markdown = new Section("Markdown", Format.Markdown, "## Context\n" +
+        Section markdown = new Section(Format.Markdown, "## Context\n" +
                 "\n" +
                 "```plantuml\n" +
                 "@startuml\n" +
@@ -23,7 +23,7 @@ public class PlantUMLEncoderPluginTests {
                 "```");
         workspace.getDocumentation().addSection(markdown);
 
-        Section asciidoc = new Section("AsciiDoc", Format.AsciiDoc, "== Context\n" +
+        Section asciidoc = new Section(Format.AsciiDoc, "== Context\n" +
                 "\n" +
                 "```plantuml\n" +
                 "@startuml\n" +
