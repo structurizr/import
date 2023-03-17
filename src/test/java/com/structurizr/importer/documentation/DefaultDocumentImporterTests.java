@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -58,7 +59,7 @@ public class DefaultDocumentImporterTests {
     public void test_importDocumentation() {
         File directory = new File("./src/test/docs/docs");
         documentationImporter.importDocumentation(workspace, directory);
-        Set<Section> sections = workspace.getDocumentation().getSections();
+        Collection<Section> sections = workspace.getDocumentation().getSections();
         assertEquals(6, sections.size());
 
         assertSection(Format.Markdown, "## Section 1", 1, "01-section-1.md", sections.stream().filter(s -> s.getOrder() == 1).findFirst().get());

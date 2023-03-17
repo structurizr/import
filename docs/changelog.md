@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1 (17th March 2023)
+
+- Updated dependencies.
+
 ## 1.4.0 (5th March 2023)
 
 - Documentation/decisions can now be added to components.
