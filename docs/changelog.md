@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0 (25th July 2022)
+
+- Updated dependencies and minimum Java version (11).
+
 ## 1.4.1 (17th March 2023)
 
 - Updated dependencies.

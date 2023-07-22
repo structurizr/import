@@ -9,7 +9,7 @@ repositories {
 }
 
 dependencies {
-    api 'com.structurizr:structurizr-core:1.23.1'
+    api 'com.structurizr:structurizr-core:1.25.0'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
 }
@@ -17,12 +17,12 @@ dependencies {
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 description = 'Utilities to import diagrams and documentation into a Structurizr workspace'
 group = 'com.structurizr'
-version = '1.4.1'
+version = '1.5.0'
 
 test {
     useJUnitPlatform()
