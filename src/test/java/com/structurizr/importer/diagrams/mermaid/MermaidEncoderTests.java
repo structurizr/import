@@ -13,15 +13,15 @@ public class MermaidEncoderTests {
     @Test
     public void encode_flowchart() throws Exception {
         File file = new File("./src/test/diagrams/mermaid/flowchart.mmd");
-        String mermaid = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-        assertEquals("eyAiY29kZSI6ImZsb3djaGFydCBURFxuICAgIFN0YXJ0IC0tPiBTdG9wIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19", new MermaidEncoder().encode(mermaid));
+        String mermaid = Files.readString(file.toPath());
+        assertEquals("Zmxvd2NoYXJ0IFRECiAgICBBW0NocmlzdG1hc10gLS0-fEdldCBtb25leXwgQihHbyBzaG9wcGluZykKICAgIEIgLS0-IEN7TGV0IG1lIHRoaW5rfQogICAgQyAtLT58T25lfCBEW0xhcHRvcF0KICAgIEMgLS0-fFR3b3wgRVtpUGhvbmVdCiAgICBDIC0tPnxUaHJlZXwgRltmYTpmYS1jYXIgQ2FyXQ==", new MermaidEncoder().encode(mermaid));
     }
 
     @Test
     public void encode_class() throws Exception {
         File file = new File("./src/test/diagrams/mermaid/class.mmd");
-        String mermaid = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
-        assertEquals("eyAiY29kZSI6ImNsYXNzRGlhZ3JhbVxuICAgIEFuaW1hbCA8fC0tIER1Y2tcbiAgICBBbmltYWwgPHwtLSBGaXNoXG4gICAgQW5pbWFsIDx8LS0gWmVicmFcbiAgICBBbmltYWwgOiAraW50IGFnZVxuICAgIEFuaW1hbCA6ICtTdHJpbmcgZ2VuZGVyXG4gICAgQW5pbWFsOiAraXNNYW1tYWwoKVxuICAgIEFuaW1hbDogK21hdGUoKVxuICAgIGNsYXNzIER1Y2t7XG4gICAgICArU3RyaW5nIGJlYWtDb2xvclxuICAgICAgK3N3aW0oKVxuICAgICAgK3F1YWNrKClcbiAgICB9XG4gICAgY2xhc3MgRmlzaHtcbiAgICAgIC1pbnQgc2l6ZUluRmVldFxuICAgICAgLWNhbkVhdCgpXG4gICAgfVxuICAgIGNsYXNzIFplYnJhe1xuICAgICAgK2Jvb2wgaXNfd2lsZFxuICAgICAgK3J1bigpXG4gICAgfVxuIiwgIm1lcm1haWQiOnsidGhlbWUiOiJkZWZhdWx0In19", new MermaidEncoder().encode(mermaid));
+        String mermaid = Files.readString(file.toPath());
+        assertEquals("Y2xhc3NEaWFncmFtCiAgICBBbmltYWwgPHwtLSBEdWNrCiAgICBBbmltYWwgPHwtLSBGaXNoCiAgICBBbmltYWwgPHwtLSBaZWJyYQogICAgQW5pbWFsIDogK2ludCBhZ2UKICAgIEFuaW1hbCA6ICtTdHJpbmcgZ2VuZGVyCiAgICBBbmltYWw6ICtpc01hbW1hbCgpCiAgICBBbmltYWw6ICttYXRlKCkKICAgIGNsYXNzIER1Y2t7CiAgICAgICtTdHJpbmcgYmVha0NvbG9yCiAgICAgICtzd2ltKCkKICAgICAgK3F1YWNrKCkKICAgIH0KICAgIGNsYXNzIEZpc2h7CiAgICAgIC1pbnQgc2l6ZUluRmVldAogICAgICAtY2FuRWF0KCkKICAgIH0KICAgIGNsYXNzIFplYnJhewogICAgICArYm9vbCBpc193aWxkCiAgICAgICtydW4oKQogICAgfQo=", new MermaidEncoder().encode(mermaid));
 
     }
 

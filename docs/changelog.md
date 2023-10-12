@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 (unreleased)
+
+- Fixes https://github.com/structurizr/import/issues/13 (Mermaid diagrams not working).
+
 ## 1.5.0 (25th July 2023)
 
 - Updated dependencies and minimum Java version (11).

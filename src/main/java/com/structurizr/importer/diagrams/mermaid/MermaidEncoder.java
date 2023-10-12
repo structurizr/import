@@ -8,11 +8,8 @@ import java.util.Base64;
  */
 public class MermaidEncoder {
 
-    private static final String TEMPLATE = "{ \"code\":\"%s\", \"mermaid\":{\"theme\":\"default\"}}";
-
     public String encode(String mermaidDefinition) {
-        String s = String.format(TEMPLATE, mermaidDefinition.replaceAll("\n", "\\\\n").replaceAll("\"", "\\\\\""));
-        return Base64.getEncoder().encodeToString(s.getBytes(StandardCharsets.UTF_8));
+        return Base64.getUrlEncoder().encodeToString(mermaidDefinition.getBytes(StandardCharsets.UTF_8));
     }
 
 }
