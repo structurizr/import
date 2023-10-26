@@ -45,7 +45,7 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
     private static final Pattern LINK_REGEX = Pattern.compile("(.*) \\[.*]\\((.*)\\)");
 
     private String dateFormat = "yyyy-MM-dd";
-    private TimeZone timeZone = TimeZone.getTimeZone("UTC");
+    private TimeZone timeZone = TimeZone.getDefault();
 
     /**
      * Sets the date format to use when parsing dates (the default is "yyyy-MM-dd").

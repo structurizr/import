@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.5.1 (unreleased)
+## 1.6.0 (unreleased)
 
 - Fixes https://github.com/structurizr/import/issues/13 (Mermaid diagrams not working).
+- Fixes https://github.com/structurizr/import/issues/14 (Date of ADRs can't be changed from UTC)
 
 ## 1.5.0 (25th July 2023)
 
