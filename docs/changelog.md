@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 (unreleased)
+
+- Adds support for SVG images (https://github.com/structurizr/import/issues/10)
+
 ## 1.6.0 (26th October 2023)
 
 - Fixes https://github.com/structurizr/import/issues/13 (Mermaid diagrams not working).

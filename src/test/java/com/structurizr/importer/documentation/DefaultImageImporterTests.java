@@ -109,7 +109,7 @@ public class DefaultImageImporterTests {
         assertTrue(documentation.getImages().isEmpty());
 
         imageImporter.importDocumentation(workspace, new File("./src/test/docs/images"));
-        assertEquals(8, documentation.getImages().size());
+        assertEquals(9, documentation.getImages().size());
 
         Image pngInDirectory = documentation.getImages().stream().filter(i -> i.getName().equals("image.png")).findFirst().get();
         assertEquals("image/png", pngInDirectory.getType());
@@ -126,6 +126,10 @@ public class DefaultImageImporterTests {
         Image gifInDirectory = documentation.getImages().stream().filter(i -> i.getName().equals("image.gif")).findFirst().get();
         assertEquals("image/gif", gifInDirectory.getType());
         assertEquals("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", gifInDirectory.getContent());
+
+        Image svgInDirectory = documentation.getImages().stream().filter(i -> i.getName().equals("image.svg")).findFirst().get();
+        assertEquals("image/svg+xml", svgInDirectory.getType());
+        assertEquals("PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0MCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIzIiBmaWxsPSJyZWQiIC8+Cjwvc3ZnPiA=", svgInDirectory.getContent());
 
         Image pngInSubDirectory = documentation.getImages().stream().filter(i -> i.getName().equals("images/image.png")).findFirst().get();
         assertEquals("image/png", pngInSubDirectory.getType());

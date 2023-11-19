@@ -7,6 +7,8 @@ import com.structurizr.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 
 /**
  * This implementation scans a given directory and automatically imports all Markdown or AsciiDoc
@@ -57,7 +59,7 @@ public class DefaultImageImporter implements DocumentationImporter {
                         importImages(documentable, root + "/" + file.getName(), file);
                     }
                 } else {
-                    if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif")) {
+                    if (name.endsWith(".png") || name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".gif") || name.endsWith(".svg")) {
                         importImage(documentable, root, file);
                     }
                 }
@@ -67,13 +69,20 @@ public class DefaultImageImporter implements DocumentationImporter {
 
     private void importImage(Documentable documentable, String path, File file) throws IOException {
         String contentType = ImageUtils.getContentType(file);
-        String base64Content = ImageUtils.getImageAsBase64(file);
+        String base64Content;
 
         String name;
         if (StringUtils.isNullOrEmpty(path)) {
             name = file.getName();
         } else {
             name = path + "/" + file.getName();
+        }
+
+        if (ImageUtils.CONTENT_TYPE_IMAGE_SVG.equalsIgnoreCase(contentType)) {
+            base64Content = Base64.getEncoder().encodeToString(Files.readAllBytes(file.toPath()));
+        } else {
+            contentType = ImageUtils.getContentType(file);
+            base64Content = ImageUtils.getImageAsBase64(file);
         }
 
         documentable.getDocumentation().addImage(new Image(name, contentType, base64Content));
