@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.0 (unreleased)
+## 1.7.0 (19th November 2023)
 
 - Adds support for SVG images (https://github.com/structurizr/import/issues/10)
 
@@ -8,6 +8,7 @@
 
 - Fixes https://github.com/structurizr/import/issues/13 (Mermaid diagrams not working).
 - Fixes https://github.com/structurizr/import/issues/14 (Date of ADRs can't be changed from UTC)
+- Updated dependencies and minimum Java version (17).
 
 ## 1.5.0 (25th July 2023)
 
