@@ -32,20 +32,21 @@ import java.util.regex.Pattern;
  * ## Context
  * ...
  */
-public class AdrToolsDecisionImporter implements DocumentationImporter {
+public class MadrToolsDecisionImporter implements DocumentationImporter {
 
     private static final String STATUS_PROPOSED = "Proposed";
     private static final String STATUS_SUPERSEDED = "Superseded";
     private static final String SUPERCEDED_ALTERNATIVE_SPELLING = "Superceded";
 
-    private static final String DATE_PREFIX = "Date: ";
-    private static final String STATUS_HEADING = "## Status";
+    private static final String DATE_PREFIX = "- Date: ";
+    private static final String LINKS_HEADING = "## Links";
     private static final String CONTEXT_HEADING = "## Context";
 
     private static final Pattern LINK_REGEX = Pattern.compile("(.*) \\[.*]\\((.*)\\)");
+    private static final String STATUS_PREFIX = "- Status: ";
 
     private String dateFormat = "yyyy-MM-dd";
-    private TimeZone timeZone = TimeZone.getDefault();
+    private TimeZone timeZone = TimeZone.getTimeZone("UTC");
 
     /**
      * Sets the date format to use when parsing dates (the default is "yyyy-MM-dd").
@@ -99,7 +100,7 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
         try {
             Map<String, Decision> decisionsById = new LinkedHashMap<>();
 
-            File[] markdownFiles = path.listFiles((dir, name) -> name.endsWith(".md") && name.matches("^\\d{4}-.*"));
+            File[] markdownFiles = path.listFiles((dir, name) -> name.endsWith(".md") && name.matches("^\\d{8}-.*"));
             if (markdownFiles != null) {
                 Map<String,Decision> decisionsByFilename = new HashMap<>();
 
@@ -128,8 +129,7 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
     }
 
     protected Decision importDecision(File file) throws Exception {
-        String id = extractIntegerIDFromFileName(file);
-        Decision decision = new Decision(id);
+        Decision decision = new Decision(file.getName());
 
         String content = new String(Files.readAllBytes(file.toPath()), StandardCharsets.UTF_8);
         content = content.replace("\r", "");
@@ -144,21 +144,17 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
         return decision;
     }
 
-    protected String extractIntegerIDFromFileName(File file) {
-        return "" + Integer.parseInt(file.getName().substring(0, 4));
-    }
-
     protected String extractTitle(String[] lines) {
         // the title is assumed to be the first line of the content, in the format:
-        // # {DECISION_ID}. {DECISION_TITLE}
+        // # {DECISION_TITLE}
         String titleLine = lines[0];
 
-        return titleLine.substring(titleLine.indexOf(".") + 2);
+        return titleLine.substring(2);
     }
 
     protected Date extractDate(String[] lines) throws Exception {
         // the date is on a line of its own, in the format:
-        // Date: {DECISION_DATE:YYYY-MM-DD}
+        // - Date: {DECISION_DATE:YYYY-MM-DD}
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
         sdf.setTimeZone(timeZone);
 
@@ -174,23 +170,12 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
     }
 
     protected String extractStatus(String[] lines) {
-        // the status is on a line of its own, after the ## Status header:
-        boolean inStatusSection = false;
+        // the status is on a line of its own, in the format:
+        // - Status: {STATUS}
         for (String line : lines) {
-            if (!inStatusSection) {
-                if (line.startsWith(STATUS_HEADING)) {
-                    inStatusSection = true;
-                }
-            } else {
-                if (!StringUtils.isNullOrEmpty(line)) {
-                    String status = line.split(" ")[0];
-                    // early versions of adr-tools used the alternative spelling
-                    if (SUPERCEDED_ALTERNATIVE_SPELLING.equals(status)) {
-                        status = STATUS_SUPERSEDED;
-                    }
-
-                    return status;
-                }
+            if(line.startsWith(STATUS_PREFIX)) {
+                String statusInput = line.substring(STATUS_PREFIX.length());
+                return Character.toUpperCase(statusInput.charAt(0)) + statusInput.substring(1);
             }
         }
 
@@ -198,19 +183,16 @@ public class AdrToolsDecisionImporter implements DocumentationImporter {
     }
 
     protected void extractLinks(Decision decision, Map<String,Decision> decisionsByFilename) {
-        // adr-tools allows users to create arbitrary links between ADRs, which reside inside the ## Status section
+        // MADR allows users to create arbitrary links between ADRs, which reside inside the ## Links section
         String[] lines = decision.getContent().split("\\n");
-        boolean inStatusSection = false;
+        boolean inLinksSection = false;
         for (String line : lines) {
-            if (!inStatusSection) {
-                if (line.startsWith(STATUS_HEADING)) {
-                    inStatusSection = true;
+            if (!inLinksSection) {
+                if (line.startsWith(LINKS_HEADING)) {
+                    inLinksSection = true;
                 }
             } else {
-                if (line.startsWith(CONTEXT_HEADING)) {
-                    // we're done
-                    return;
-                } else if (!StringUtils.isNullOrEmpty(line)) {
+                if (!StringUtils.isNullOrEmpty(line)) {
                     Matcher matcher = LINK_REGEX.matcher(line);
                     if (matcher.find()) {
                         String linkDescription = matcher.group(1);
